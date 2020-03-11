@@ -79,11 +79,11 @@ export default class Weather extends Component<Props, State> {
 		const forecastDisplayDefined = forecast.slice(0,5).map((item, index) => {
 				let date = new Date();
 				date.setDate(date.getDate() + (index + 1));
-				return (<div className="col"> <WeatherForecast weatherData={item} location={this.state.weatherData?.sys.country} date={date.toLocaleDateString()} /> </div>)
+				return (<div className="col forecast-box"> <WeatherForecast weatherData={item} location={this.state.weatherData?.sys.country} date={date.toLocaleDateString()} /> </div>)
 		});
 
 		return (
-			<div>
+			<div className="weather-box">
 				{weatherDisplayDefined}
 				<div className="row w-75 vertical-center">
 					{forecastDisplayDefined}

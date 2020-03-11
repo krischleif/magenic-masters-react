@@ -35,11 +35,11 @@ export default class WeatherDisplay extends Component<Props, State> {
 
         return (
 			<Fragment>
-				<h3>
+				<h1>
 					Current conditions in {weatherData.name} are:
-				</h3>
+				</h1>
 				<h2>{weatherData.weather[0].main}</h2>
-                <h4>It is {Math.round(degrees)} degrees {degreeType}</h4>
+                <h3>It is {Math.round(degrees)} degrees {degreeType}</h3>
 			</Fragment>
 		);
 	}
