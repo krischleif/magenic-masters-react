@@ -23,14 +23,10 @@ export default class Weather extends Component<Props, State> {
 		this.state = {
 			weatherData: undefined,
 			weatherForecast: undefined
+
 		};
 	}
 
-	componentDidMount() {
-		this.getCurrentLocation()
-			.then(geolocation => this.getCurrentWeather(geolocation))
-			.catch(err => console.log(err));
-	}
 
 	getCurrentLocation(): Promise<Location> {
 		return new Promise((resolve, reject) => {
@@ -51,22 +47,28 @@ export default class Weather extends Component<Props, State> {
 	}
 
 	//gets current weather data at a given location and saves it into state
-	getCurrentWeather(geolocation: Location): void {
-		fetch(`${API}/weather?lat=${geolocation.latitude}&lon=${geolocation.longitude}&appId=${APIKEY}`)
+	getCurrentWeather(location: Location): void {
+		fetch(`${API}/weather?lat=${location.latitude}&lon=${location.longitude}&appId=${APIKEY}`)
 			.then(res => res.json())
 			.then(data => {
 				this.setState({ weatherData: data });
-				this.getFiveDayWeather(geolocation);
+				this.getFiveDayWeather(location);
 			})
 			.catch(err => console.log(err));
 	}
 
-	getFiveDayWeather(geolocation: Location){
-		fetch(`${API}/forecast?lat=${geolocation.latitude}&lon=${geolocation.longitude}&appId=${APIKEY}`)
+	getFiveDayWeather(location: Location){
+		fetch(`${API}/forecast?lat=${location.latitude}&lon=${location.longitude}&appId=${APIKEY}`)
 			.then(res => res.json())
 			.then(data => {
 				this.setState({weatherForecast: data.list});
 			})
+	}
+
+	componentDidMount() {
+		this.getCurrentLocation()
+			.then(location => this.getCurrentWeather(location))
+			.catch(err => console.log(err));
 	}
 
 	render() {
@@ -76,11 +78,15 @@ export default class Weather extends Component<Props, State> {
 
 		let forecast: Array<WeatherData> = this.state.weatherForecast ? Array.from(this.state.weatherForecast) : [];
 
-		const forecastDisplayDefined = forecast.slice(0,5).map((item, index) => {
-				let date = new Date();
-				date.setDate(date.getDate() + (index + 1));
-				return (<div className="col forecast-box"> <WeatherForecast weatherData={item} location={this.state.weatherData?.sys.country} date={date.toLocaleDateString()} /> </div>)
-		});
+		const forecastDisplayDefined: Array<any> = [];
+		let date = new Date();
+
+		for (let i = 0; i < forecast.length; i=i+8){
+			date.setDate(date.getDate() + 1);
+			forecastDisplayDefined.push((<div className="col forecast-box"> <WeatherForecast weatherData={forecast[i]} location={this.state.weatherData?.sys.country} date={date.toLocaleDateString()} /> </div>));
+		}
+		
+		
 
 		return (
 			<div className="weather-box">

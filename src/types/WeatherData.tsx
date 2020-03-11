@@ -35,5 +35,6 @@ export type WeatherData = {
     id: number;
     name: string;
     cod: number;
+    dt_txt: Date;
 };
 
