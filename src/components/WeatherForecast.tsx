@@ -38,7 +38,7 @@ export default class WeatherForecast extends Component<Props, State> {
         return (
 			<Fragment>
                 <p>On {this.props.date}</p> 
-                <p>It will be {Math.round(degrees)} {degreeType} outside</p><p> Conditions: {weatherData.weather[0].main}</p>
+                <p>Temp {Math.round(degrees)} {degreeType}</p><p> Conditions: {weatherData.weather[0].main}</p>
 			</Fragment>
 		);
 	}
