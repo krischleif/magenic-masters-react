@@ -1,5 +1,5 @@
-import React from 'react';
-import { Component, Fragment } from 'react';
+import React, { useState } from 'react';
+import { Fragment } from 'react';
 
 import { WeatherData } from '../types/WeatherData';
 
@@ -13,33 +13,27 @@ interface State {
     celsius: boolean;
 }
 
-export default class WeatherForecast extends Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {
-            celsius: this.props.location !== 'US'
-		};
-	}
+export default function WeatherForecast (props: Props) {
+    const [celsius, setCelsius] = useState(props.location !== 'US');
+
     
-    convertTemp(temp: number): number {
+    const convertTemp = (temp: number): number => {
         let tempConvert: number = temp - 273.15;
-        if(!this.state.celsius){
+        if(!celsius){
             tempConvert = (tempConvert * 1.8) + 32;
         }
 
         return tempConvert;
     }
 
-	render() {
-        const { weatherData } = this.props;
-        const degreeType: String = this.state.celsius ? 'C' : 'F';
-        const degrees: number = this.convertTemp(weatherData.main.temp);
+    const { weatherData } = props;
+    const degreeType: String = celsius ? 'C' : 'F';
+    const degrees: number = convertTemp(weatherData.main.temp);
 
-        return (
-			<Fragment>
-                <p>On {this.props.date}</p> 
-                <p>Temp {Math.round(degrees)} {degreeType}</p><p> Conditions: {weatherData.weather[0].main}</p>
-			</Fragment>
-		);
-	}
+	return(
+        <Fragment>
+            <p>On {props.date}</p> 
+            <p>Temp {Math.round(degrees)} {degreeType}</p><p> Conditions: {weatherData.weather[0].main}</p>
+        </Fragment>
+    );
 }
