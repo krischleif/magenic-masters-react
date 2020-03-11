@@ -7,10 +7,6 @@ interface Props {
 	weatherData: WeatherData;
 }
 
-interface State {
-	celsius: boolean;
-}
-
 export default function WeatherDisplay (props: Props) {
 	const [celsius, setCelsius] = useState(props.weatherData.sys.country !== 'US');
 	
@@ -25,7 +21,7 @@ export default function WeatherDisplay (props: Props) {
 
         return tempConvert;
 	}
-	
+
 	const degrees: number = convertTemp(weatherData.main.temp);
 
 	return (

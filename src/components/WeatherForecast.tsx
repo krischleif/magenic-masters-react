@@ -9,10 +9,6 @@ interface Props {
     date: string;
 }
 
-interface State {
-    celsius: boolean;
-}
-
 export default function WeatherForecast (props: Props) {
     const [celsius, setCelsius] = useState(props.location !== 'US');
 
